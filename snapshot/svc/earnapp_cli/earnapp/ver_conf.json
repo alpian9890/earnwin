@@ -1,0 +1,14 @@
+{
+  "name": "earnapp",
+  "api_domain": [
+    "client.earnapp.com"
+  ],
+  "encrypt_logs": true,
+  "debug": false,
+  "vkey": "ff715e75147f6bf9087423b39003bf0a",
+  "appid": "win_earnapp.com",
+  "partnerid": "luminati",
+  "is_tv": false,
+  "confdir": "/etc/earnapp",
+  "watch_status_file": true
+}

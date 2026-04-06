@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "linux-release-info": "^3.0.0"
+  }
+}

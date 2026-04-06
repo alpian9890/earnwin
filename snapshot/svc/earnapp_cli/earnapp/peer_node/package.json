@@ -1,0 +1,18 @@
+{
+  "name": "peer_node",
+  "version": "1.617.296",
+  "description": "Bright SDK",
+  "main": "index.js",
+  "author": "brightdata",
+  "license": "BSD",
+  "dependencies": {
+    "rimraf": "5.0.7",
+    "agentkeepalive": "4.5.0",
+    "ws": "8.17.1",
+    "https-proxy-agent": "7.0.4",
+    "netmask": "2.0.2",
+    "rotating-file-stream": "2.1.6",
+    "uuid": "9.0.1",
+    "linux-release-info": "3.0.0"
+  }
+}

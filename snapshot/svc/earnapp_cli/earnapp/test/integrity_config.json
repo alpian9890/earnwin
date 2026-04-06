@@ -1,0 +1,13 @@
+{
+  "earnapp": {
+    "name": "earnapp",
+    "targets": [
+      "x64",
+      "arm7l",
+      "aarch64"
+    ],
+    "ver_conf": {
+      "appid": "node_earnapp.com"
+    }
+  }
+}
