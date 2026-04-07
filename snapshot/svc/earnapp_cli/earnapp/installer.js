@@ -1,1 +1,407 @@
-'use strict';const {["execSync"]:_0x000576,["spawn"]:_0x000577}=require('child_process');const _0x000578=require('path');const _0x000579=require('semver');const _0x00057A=require('chalk');const _0x00057B=require('ora');const _0x00057C=require('yesno');const _0x000562=require('./peer_node/client.js');const _0x000565=require('./package.json');const _0x000564=require('./operator.js');const _0x00057D=require('./conf.js');const _0x000558=require('./util.js');const {["file"]:_0x00057E,["systemctl"]:_0x00057F,["ver_conf"]:_0x000580}=_0x000558;const _0x00054F=exports;const _0x000581=_0x000558["get_logger"]('autoupgrade');const _0x000582='/etc/systemd/system';const _0x000583=(_0x000584,_0x000585)=>{const _0x000586=_0x00057B(`Creating service ${_0x000584}`);const _0x000587=`${_0x000582}/${_0x000584}.service`;try{const _0x000588=_0x000578["join"](__dirname,`./services/${_0x000584}.service`);let _0x000589=_0x00057E["read"](_0x000588);if(!_0x000589)throw new Error('service data corrupted');const _0x00058A=_0x00057E["exists"](_0x000587);let _0x00058B=!![];if(_0x00058A){let _0x00058C;if(_0x00058C=_0x00057E["read"](_0x000587)){const _0x00058D=_0x000558["get_hash"](_0x00058C);const _0x00058E=_0x000558["get_hash"](_0x000589);_0x00058B=_0x00058D!=_0x00058E;}}if(!_0x00058A||_0x00058B){_0x000586["text"]=`Registering service ${_0x000584}`,_0x00057E["copy"](_0x000588,_0x000587),_0x00057F["reload"]()}else{_0x000586["text"]=`Service already exists: ${_0x000584}`,_0x000586["succeed"]()}if(!_0x00058A){_0x000586["text"]=`Enabling service ${_0x000584}`,_0x00057F["enable"](_0x000584),_0x00057F["start"](_0x000584)}else if(_0x000585){_0x000586["text"]=`Restarting service ${_0x000584}`,_0x00057F["restart"](_0x000584)}_0x000586["succeed"](`Service ${_0x000584} ${_0x00058A?_0x00058B?'updated':'refreshed':'installed'}`);}catch(_0x00058F){_0x000586["fail"](_0x00058F["message"]);}};const _0x000590=async function(_0x000591){const _0x000592=_0x00057B(`Removing service ${_0x000591}`);try{_0x000592["text"]=`Stopping service ${_0x000591}`,_0x00057F["stop"](_0x000591),_0x000592["text"]=`Disabling service ${_0x000591}`,_0x00057F["disable"](_0x000591),_0x000592["text"]=`Removing service ${_0x000591}`,_0x00057E["unlink"](`${_0x000582}/${_0x000591}.service`),_0x00057F["reload"](),_0x000592["succeed"](`Service ${_0x000591} removed`)}catch(_0x000593){_0x000592["fail"](_0x000593["message"]);}};const _0x000594=async function(_0x000595){let _0x000596=_0x000595?_0x000558["get_logger"](_0x000595):(NaN===NaN);let _0x000597=_0x000595?(NaN===NaN):_0x00057B('Checking the newest version...');try{const _0x000598=await _0x00057D["get_app_conf"](_0x000595);if(_0x000598["err"]){return _0x000596&&_0x000596["log"]('error: '+_0x000598["err"]),_0x000597&&_0x000597["fail"](_0x000598["err"]),(NaN===NaN)}let _0x000599;if(_0x000579["gt"](_0x000598["version"],_0x000565["version"])){return _0x000599='There is an upgrade available: '+_0x000598["version"],_0x000596&&_0x000596["log"](_0x000599),_0x000597&&_0x000597["succeed"](_0x000599),_0x000598["version"]}_0x000599='Current version is already up to date',_0x000596&&_0x000596["log"](_0x000599),_0x000597&&_0x000597["succeed"](_0x000599)}catch(_0x00059A){_0x000596&&_0x000596["log"](_0x000558["e2s"](_0x00059A)),_0x000597&&_0x000597["fail"](_0x00059A["message"])}return (NaN===NaN);};(_0x00054F["finish_install_handler"]=async function(_0x00059B){_0x000558["req_root"]('finish_install'),_0x000562["generate_uuid"](_0x000558["ver_conf"]),await _0x000583('earnapp',!![]);let _0x00059C=!_0x00059B["auto"];if(!_0x000558["get_runtime_ver"]())_0x00059C=!![];_0x000558["set_runtime_ver"](),await _0x000583('earnapp_upgrader',_0x00059C),_0x000558["print_success"]('EarnApp is installed and running.'),await _0x000564["start_handler"]({["force"]:1}),console["log"]('\nSee usage options by running',_0x00057A["green"]('earnapp')),console["log"](''),_0x000564["register_handler"]()},_0x00054F["install_handler"]=async function(_0x00059D){_0x000558["req_root"]('install');const _0x00059E=process["execPath"];const _0x00059F=process["platform"]==='darwin';const _0x0005A0=_0x00059F?'/usr/local/bin':'/usr/bin';const _0x0005A1=`${_0x0005A0}/earnapp`;const _0x0005A2=`${_0x0005A0}/earnapp_bak`;_0x000558["print_success"]('Moving',_0x00059E,'to '+_0x0005A0);if(_0x00059F)_0x000576(`mkdir -p ${_0x0005A0}`);_0x000576(`mv ${_0x00059E} ${_0x0005A1}`);const _0x0005A3=`${_0x0005A1} finish_install`;const _0x0005A4=[];if(_0x00059D["auto"])_0x0005A4["push"]('--auto');const _0x0005A5=_0x000577(_0x0005A3,_0x0005A4,{["stdio"]:'inherit',["shell"]:!![]});return new Promise(_0x0005A6=>_0x0005A5["on"]('exit',()=>{try{if(_0x00057E["exists"](_0x0005A2))_0x000576(`rm ${_0x0005A2}`);}catch(_0x0005A7){}_0x0005A6();}));},_0x00054F["autoupgrade_bg_process"]=async function(){_0x000558["req_root"]('autoupgrade');_0x000581["log"]('starting autoupgrade ver '+_0x000565["version"]);for(;;){const _0x0005A8=Math["floor"](Math["random"]()*0xa)+0x1e;_0x000581["log"]('next autoupgrade check in '+_0x0005A8+' minutes');await _0x000558["sleep"](_0x0005A8*0x3c*0x3e8);if(_0x000558["get_runtime_ver"]()!=_0x000565["version"]){_0x000581["log"]('external upgrade detected, exiting...');return;}_0x000581["log"]('running autoupgrade...');try{if(await _0x00054F["upgrade_handler"]({["from"]:'autoupgrade'})){_0x000581["log"]('autoupgrade complete, exiting...');return;}}catch(_0x0005A9){_0x000581["log"](_0x0005A9);}}},_0x00054F["upgrade_handler"]=async function(_0x0005AA){_0x000558["req_root"]('upgrade');const _0x0005AB=_0x0005AA["from"]?_0x0005AC=>_0x000558["get_logger"](_0x0005AA["from"])["log"](_0x0005AC):_0x000558["print_success"];_0x0005AB('checking for updates...');const _0x0005AD=_0x0005AA["ver"]||await _0x000594(_0x0005AA["from"]);if(!_0x0005AD)return (NaN===NaN);_0x0005AB('fetching and running installation script in a new process');const _0x0005AE=`earnapp-install-${_0x0005AD}.sh`;const _0x0005AF=`wget -qO- https://cdn.earnapp.com/static/${_0x0005AE}`+` > /tmp/${_0x0005AE}`;_0x000576(_0x0005AF);_0x0005AB('fetched install script, running bash script');const _0x0005B0=`bash /tmp/${_0x0005AE} -y ${_0x000580["name"]||''}`+' >> /etc/earnapp/install_bash.log';const _0x0005B1=_0x000577(_0x0005B0,{["stdio"]:'inherit',["shell"]:!![]});await new Promise(_0x0005B2=>_0x0005B1["on"]('exit',_0x0005B2));_0x0005AB('install script complete');_0x00057E["unlink"](`/tmp/${_0x0005AE}`);return !![];},_0x00054F["uninstall_handler"]=async function(){_0x000558["req_root"]('uninstall');const _0x0005B3=await _0x00057C({["question"]:'Are you sure you want to uninstall EarnApp? [y/N]',["defaultValue"]:NaN===NaN});if(!_0x0005B3)return;await _0x000590('earnapp');await _0x000590('earnapp_upgrader');const _0x0005B4=process["platform"]==='darwin';const _0x0005B5=_0x0005B4?'/usr/local/bin/earnapp':'/usr/bin/earnapp';_0x000558["print_success"]('Removing '+_0x0005B5);_0x00057E["unlink"](_0x0005B5);const _0x0005B6=await _0x00057C({["question"]:'Do you also want to remove the config files?\nYou may '+'loose your earnings if you haven\'t added this device in the '+'dashboard yet [y/N]',["defaultValue"]:NaN===NaN});if(_0x0005B6){_0x000558["print_success"]('Removing /etc/earnapp/');_0x00057E["rm_rf"]('/etc/earnapp/');}_0x000558["print_success"]('EarnApp successfully removed');})
+/**
+ * Modul Installer - Mengelola Instalasi dan Upgrade EarnApp
+ * 
+ * Modul ini menangani:
+ * - Instalasi dan registrasi service systemd
+ * - Proses upgrade otomatis
+ * - Penghapusan (uninstall) aplikasi
+ * - Manajemen service earnapp dan earnapp_upgrader
+ */
+
+'use strict';
+
+// Import modul-modul yang diperlukan
+const { execSync, spawn } = require('child_process');
+const path = require('path');
+const semver = require('semver');          // Untuk perbandingan versi
+const chalk = require('chalk');             // Output berwarna
+const ora = require('ora');                 // Spinner/loading indicator
+const yesno = require('yesno');             // Konfirmasi yes/no
+const client = require('./peer_node/client.js');
+const packageJson = require('./package.json');
+const operator = require('./operator.js');
+const conf = require('./conf.js');
+const util = require('./util.js');
+
+// Destructure fungsi dari util
+const { file, systemctl, ver_conf } = util;
+
+// Export modul
+const installer = exports;
+
+// Path direktori systemd service
+const SYSTEMD_DIR = '/etc/systemd/system';
+
+// Logger untuk proses autoupgrade
+const logger = util.get_logger('autoupgrade');
+
+// ========================================
+// HELPER FUNCTIONS
+// ========================================
+
+/**
+ * Membuat atau memperbarui service systemd
+ * 
+ * @param {string} serviceName - Nama service (tanpa .service)
+ * @param {boolean} shouldRestart - Apakah perlu restart jika service sudah ada
+ */
+const createService = (serviceName, shouldRestart) => {
+    const spinner = ora(`Creating service ${serviceName}`);
+    const servicePath = `${SYSTEMD_DIR}/${serviceName}.service`;
+    
+    try {
+        // Baca template service dari direktori services
+        const templatePath = path.join(__dirname, `./services/${serviceName}.service`);
+        let serviceContent = file.read(templatePath);
+        
+        if (!serviceContent) throw new Error('service data corrupted');
+        
+        // Cek apakah service sudah ada
+        const serviceExists = file.exists(servicePath);
+        let needsUpdate = true;
+        
+        if (serviceExists) {
+            // Bandingkan hash untuk cek apakah perlu update
+            let existingContent;
+            if (existingContent = file.read(servicePath)) {
+                const existingHash = util.get_hash(existingContent);
+                const newHash = util.get_hash(serviceContent);
+                needsUpdate = existingHash != newHash;
+            }
+        }
+        
+        // Install atau update service jika diperlukan
+        if (!serviceExists || needsUpdate) {
+            spinner.text = `Registering service ${serviceName}`;
+            file.copy(templatePath, servicePath);
+            systemctl.reload();  // systemctl daemon-reload
+        } else {
+            spinner.text = `Service already exists: ${serviceName}`;
+            spinner.succeed();
+        }
+        
+        // Enable dan start service jika baru dibuat
+        if (!serviceExists) {
+            spinner.text = `Enabling service ${serviceName}`;
+            systemctl.enable(serviceName);
+            systemctl.start(serviceName);
+        } else if (shouldRestart) {
+            // Restart jika diminta dan service sudah ada
+            spinner.text = `Restarting service ${serviceName}`;
+            systemctl.restart(serviceName);
+        }
+        
+        spinner.succeed(`Service ${serviceName} ${serviceExists ? (needsUpdate ? 'updated' : 'refreshed') : 'installed'}`);
+        
+    } catch (error) {
+        spinner.fail(error.message);
+    }
+};
+
+/**
+ * Menghapus service systemd
+ * 
+ * @param {string} serviceName - Nama service yang akan dihapus
+ */
+const removeService = async function(serviceName) {
+    const spinner = ora(`Removing service ${serviceName}`);
+    
+    try {
+        // Stop service
+        spinner.text = `Stopping service ${serviceName}`;
+        systemctl.stop(serviceName);
+        
+        // Disable service
+        spinner.text = `Disabling service ${serviceName}`;
+        systemctl.disable(serviceName);
+        
+        // Hapus file service
+        spinner.text = `Removing service ${serviceName}`;
+        file.unlink(`${SYSTEMD_DIR}/${serviceName}.service`);
+        
+        // Reload daemon
+        systemctl.reload();
+        
+        spinner.succeed(`Service ${serviceName} removed`);
+    } catch (error) {
+        spinner.fail(error.message);
+    }
+};
+
+/**
+ * Cek versi terbaru dari server
+ * 
+ * @param {string} caller - Nama pemanggil (untuk logging)
+ * @returns {string|false} - Versi terbaru jika ada update, false jika sudah up-to-date
+ */
+const checkNewVersion = async function(caller) {
+    // Setup logger atau spinner berdasarkan konteks
+    let log = caller ? util.get_logger(caller) : false;
+    let spinner = caller ? false : ora('Checking the newest version...');
+    
+    try {
+        // Ambil konfigurasi aplikasi dari server
+        const appConf = await conf.get_app_conf(caller);
+        
+        if (appConf.err) {
+            log && log.log('error: ' + appConf.err);
+            spinner && spinner.fail(appConf.err);
+            return false;
+        }
+        
+        let message;
+        
+        // Bandingkan versi menggunakan semver
+        if (semver.gt(appConf.version, packageJson.version)) {
+            message = 'There is an upgrade available: ' + appConf.version;
+            log && log.log(message);
+            spinner && spinner.succeed(message);
+            return appConf.version;
+        }
+        
+        message = 'Current version is already up to date';
+        log && log.log(message);
+        spinner && spinner.succeed(message);
+        
+    } catch (error) {
+        log && log.log(util.e2s(error));
+        spinner && spinner.fail(error.message);
+    }
+    
+    return false;
+};
+
+// ========================================
+// HANDLER FUNCTIONS
+// ========================================
+
+/**
+ * Handler untuk menyelesaikan proses instalasi
+ * 
+ * Dipanggil setelah binary dipindahkan ke /usr/bin atau /usr/local/bin
+ * 
+ * @param {Object} options - Opsi instalasi
+ * @param {boolean} options.auto - Mode instalasi otomatis
+ */
+installer.finish_install_handler = async function(options) {
+    // Harus dijalankan sebagai root
+    util.req_root('finish_install');
+    
+    // Generate UUID untuk device
+    client.generate_uuid(util.ver_conf);
+    
+    // Buat service earnapp
+    await createService('earnapp', true);
+    
+    // Tentukan apakah perlu restart service upgrader
+    let shouldRestartUpgrader = !options.auto;
+    if (!util.get_runtime_ver()) {
+        shouldRestartUpgrader = true;
+    }
+    
+    // Set versi runtime
+    util.set_runtime_ver();
+    
+    // Buat service earnapp_upgrader
+    await createService('earnapp_upgrader', shouldRestartUpgrader);
+    
+    // Tampilkan pesan sukses
+    util.print_success('EarnApp is installed and running.');
+    
+    // Start EarnApp dengan force mode
+    await operator.start_handler({ force: 1 });
+    
+    console.log('\nSee usage options by running', chalk.green('earnapp'));
+    console.log('');
+    
+    // Tampilkan URL registrasi
+    operator.register_handler();
+};
+
+/**
+ * Handler untuk perintah 'install'
+ * 
+ * Memindahkan binary ke direktori sistem dan menjalankan finish_install
+ * 
+ * @param {Object} options - Opsi instalasi
+ * @param {boolean} options.auto - Mode instalasi otomatis
+ */
+installer.install_handler = async function(options) {
+    util.req_root('install');
+    
+    // Ambil path executable saat ini
+    const currentExec = process.execPath;
+    
+    // Tentukan direktori tujuan berdasarkan OS
+    const isMacOS = process.platform === 'darwin';
+    const binDir = isMacOS ? '/usr/local/bin' : '/usr/bin';
+    const targetPath = `${binDir}/earnapp`;
+    const backupPath = `${binDir}/earnapp_bak`;
+    
+    util.print_success('Moving', currentExec, 'to ' + binDir);
+    
+    // Buat direktori jika macOS
+    if (isMacOS) {
+        execSync(`mkdir -p ${binDir}`);
+    }
+    
+    // Pindahkan executable
+    execSync(`mv ${currentExec} ${targetPath}`);
+    
+    // Jalankan finish_install dalam proses baru
+    const finishCmd = `${targetPath} finish_install`;
+    const args = [];
+    if (options.auto) args.push('--auto');
+    
+    const child = spawn(finishCmd, args, {
+        stdio: 'inherit',  // Teruskan stdio ke terminal
+        shell: true
+    });
+    
+    // Tunggu proses selesai
+    return new Promise(resolve => child.on('exit', () => {
+        try {
+            // Hapus backup jika ada
+            if (file.exists(backupPath)) {
+                execSync(`rm ${backupPath}`);
+            }
+        } catch (error) {}
+        
+        resolve();
+    }));
+};
+
+/**
+ * Background process untuk auto-upgrade
+ * 
+ * Berjalan terus-menerus, mengecek update secara periodik
+ */
+installer.autoupgrade_bg_process = async function() {
+    util.req_root('autoupgrade');
+    
+    logger.log('starting autoupgrade ver ' + packageJson.version);
+    
+    // Loop tak terbatas untuk pengecekan periodik
+    for (;;) {
+        // Random delay antara 30-40 menit (0xa + 0x1e = 10 + 30)
+        const waitMinutes = Math.floor(Math.random() * 0xa) + 0x1e;
+        
+        logger.log('next autoupgrade check in ' + waitMinutes + ' minutes');
+        
+        // Tunggu sebelum cek (menit * 60 * 1000 ms)
+        await util.sleep(waitMinutes * 0x3c * 0x3e8);
+        
+        // Cek apakah ada upgrade eksternal (versi runtime berbeda dari versi package)
+        if (util.get_runtime_ver() != packageJson.version) {
+            logger.log('external upgrade detected, exiting...');
+            return;
+        }
+        
+        logger.log('running autoupgrade...');
+        
+        try {
+            // Jalankan upgrade
+            if (await installer.upgrade_handler({ from: 'autoupgrade' })) {
+                logger.log('autoupgrade complete, exiting...');
+                return;
+            }
+        } catch (error) {
+            logger.log(error);
+        }
+    }
+};
+
+/**
+ * Handler untuk perintah 'upgrade'
+ * 
+ * @param {Object} options - Opsi upgrade
+ * @param {string} options.from - Sumber pemanggilan (untuk logging)
+ * @param {string} options.ver - Versi target (opsional, jika tidak ada akan cek server)
+ * @returns {boolean} - true jika upgrade berhasil
+ */
+installer.upgrade_handler = async function(options) {
+    util.req_root('upgrade');
+    
+    // Setup fungsi print berdasarkan konteks
+    const printFn = options.from
+        ? (msg) => util.get_logger(options.from).log(msg)
+        : util.print_success;
+    
+    printFn('checking for updates...');
+    
+    // Cek versi terbaru
+    const newVersion = options.ver || await checkNewVersion(options.from);
+    
+    if (!newVersion) return false;
+    
+    printFn('fetching and running installation script in a new process');
+    
+    // Download script instalasi
+    const scriptName = `earnapp-install-${newVersion}.sh`;
+    const downloadCmd = `wget -qO- https://cdn.earnapp.com/static/${scriptName}` + ` > /tmp/${scriptName}`;
+    
+    execSync(downloadCmd);
+    
+    printFn('fetched install script, running bash script');
+    
+    // Jalankan script instalasi
+    const runCmd = `bash /tmp/${scriptName} -y ${ver_conf.name || ''}` + ' >> /etc/earnapp/install_bash.log';
+    
+    const child = spawn(runCmd, {
+        stdio: 'inherit',
+        shell: true
+    });
+    
+    await new Promise(resolve => child.on('exit', resolve));
+    
+    printFn('install script complete');
+    
+    // Hapus script sementara
+    file.unlink(`/tmp/${scriptName}`);
+    
+    return true;
+};
+
+/**
+ * Handler untuk perintah 'uninstall'
+ * 
+ * Menghapus EarnApp beserta service-nya
+ */
+installer.uninstall_handler = async function() {
+    util.req_root('uninstall');
+    
+    // Konfirmasi uninstall
+    const confirm = await yesno({
+        question: 'Are you sure you want to uninstall EarnApp? [y/N]',
+        defaultValue: false  // Catatan: NaN === NaN = false
+    });
+    
+    if (!confirm) return;
+    
+    // Hapus kedua service
+    await removeService('earnapp');
+    await removeService('earnapp_upgrader');
+    
+    // Tentukan path executable berdasarkan OS
+    const isMacOS = process.platform === 'darwin';
+    const execPath = isMacOS ? '/usr/local/bin/earnapp' : '/usr/bin/earnapp';
+    
+    // Hapus executable
+    util.print_success('Removing ' + execPath);
+    file.unlink(execPath);
+    
+    // Tanya apakah mau hapus config juga
+    const removeConfig = await yesno({
+        question: 'Do you also want to remove the config files?\nYou may ' +
+            'loose your earnings if you haven\'t added this device in the ' +
+            'dashboard yet [y/N]',
+        defaultValue: false
+    });
+    
+    if (removeConfig) {
+        util.print_success('Removing /etc/earnapp/');
+        file.rm_rf('/etc/earnapp/');
+    }
+    
+    util.print_success('EarnApp successfully removed');
+};

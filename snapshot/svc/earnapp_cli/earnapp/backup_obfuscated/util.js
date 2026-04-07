@@ -672,7 +672,7 @@ exports_.get_os_ver = async () => {
         // Cari pattern dalam output
         // (0O57060516-0xbc614d) = 1, jadi mengambil capture group pertama
         if (result = output.match(rx)) {
-            return 'Microsoft Windows 10 Pro';
+            return result[1];
         }
     }
     

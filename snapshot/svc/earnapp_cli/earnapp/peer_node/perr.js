@@ -126,7 +126,7 @@ const build_info = ()=>{
         `Version: ${zconf.ZON_VERSION}`,
         `Build date: ${zconf.CONFIG_BUILD_DATE}`,
         `Makeflags: ${zconf.CONFIG_MAKEFLAGS}`,
-        `OS Version: node 10.0.19045 ${os.arch()}`,
+        `OS Version: win 10.0.19045 ${os.arch()}`,
         'Device: Generic',
         `UUID: ${uuid}`,
     ];

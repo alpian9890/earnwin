@@ -1,1 +1,292 @@
-'use strict';const _0x00057A=require('chalk');const _0x00057B=require('ora');const _0x000562=require('./peer_node/client.js');const _0x000558=require('./util.js');const {["get_app_conf"]:_0x0005C2}=require('./conf.js');const _0x00054F=exports;const _0x0005C3=()=>{const _0x0005C4=_0x000558["get_status"]();return _0x0005C4["startsWith"]('enabled');};const _0x0005C5=(..._0x0005C6)=>{const [_0x0005C7,..._0x0005C8]=_0x0005C6;console["log"]('%s '+_0x0005C7,_0x00057A["yellow"]('⚠'),..._0x0005C8);};(_0x00054F["verify_license"]=async function(){const _0x0005C9=_0x000558["ver_conf"];if(!_0x000558["get_uuid"]())return !![];const {["verify_license"]:_0x0005CA=_0x0005C9["verify_license"]}=await _0x0005C2('verify_license');if(!_0x0005CA)return !![];const _0x0005CB=_0x000558["get_license"]();const _0x0005CC=_0x0005C9["name"];const _0x0005CD=await _0x000558["get_serial"]();try{const _0x0005CE=await _0x000558["send_api"]('/verify_license',{["method"]:'post',["data"]:{["serial"]:_0x0005CD,["product"]:_0x0005CC,["license"]:_0x0005CB}});if(_0x0005CE["data"][_0x0005CC]&&_0x0005CE["data"][_0x0005CC]==_0x0005CD)return !![];}catch(_0x0005CF){}const _0x0005D0=+_0x0005CA||0xc*0x3c*0x3c*0x3e8;return _0x0005C5('invalid license: next check in %s',_0x000558["ms_to_dur"](_0x0005D0)),await _0x000558["sleep"](_0x0005D0),_0x00054F["verify_license"]()},_0x00054F["ensure_registered"]=async function(_0x0005D1={}){try{if(_0x0005D1["force"]&&!_0x000558["is_registered"]()&&_0x000558["is_registered"]({["obsolete"]:1})){_0x000558["set_registered"]();return !![];}if(_0x000558["is_registered"]())return !![];const _0x0005D2=_0x00057B('Registering Device...')["start"]();const _0x0005D3=await _0x000558["send_api"]('/install_device',{["method"]:'post',["data"]:{["serial"]:await _0x000558["get_serial"]()}});if(!_0x0005D3||!_0x0005D3["data"]){_0x0005D2["fail"]('Failed registering device');return (NaN===NaN);}if(_0x0005D3["data"]["ok"]){_0x000558["set_registered"]();_0x0005D2["succeed"]('Registered');}else if(_0x0005D3["data"]["preinstall"])_0x0005D2["succeed"]('Registered (preinstall mode)');else{_0x0005D2["fail"]('Failed registering device (unexpected response)');return (NaN===NaN);}return !![];}catch(_0x0005D4){console["error"](_0x0005D4);}return (NaN===NaN);},_0x00054F["status_handler"]=async function(){const _0x0005D5=_0x00057B('Checking status...')["start"]();await _0x000558["sleep"](0x320);const _0x0005D6=_0x0005C3();const _0x0005D7='Current status: '+(_0x0005D6?'enabled':'disabled');_0x0005D5["succeed"](_0x0005D7);},_0x00054F["start_handler"]=async function(_0x0005D8={}){const _0x0005D9=_0x00057B('Starting EarnApp...');const _0x0005DA=_0x0005C3();if(_0x0005DA&&!_0x0005D8["force"]){return _0x0005D9["fail"]('EarnApp was already started before.','To check status run:',_0x00057A["yellow"]('earnapp status'));}_0x000558["set_status"]('enabled');const _0x0005DB=await _0x00054F["ensure_registered"]({["force"]:_0x0005D8["force"]});if(!_0x0005DB){return console["log"]('Failed registration: check internet connection and try again');}_0x0005D9["succeed"]('EarnApp is active (making money in the background)');},_0x00054F["stop_handler"]=()=>{const _0x0005DC=_0x00057B('Stopping EarnApp...');const _0x0005DD=_0x0005C3();if(!_0x0005DD){return _0x0005DC["fail"]('EarnApp is not running, nothing to stop','To start run:',_0x00057A["green"]('earnapp start'));}_0x000558["set_status"]('disabled');const _0x0005DE='EarnApp stopped. Run: '+_0x00057A["green"]('earnapp start')+' to activate again';_0x0005DC["succeed"](_0x0005DE);},_0x00054F["register_handler"]=()=>{const _0x0005DF=_0x000558["get_uuid"]();_0x0005C5('You must register it for earnings to be added to your account.');_0x0005C5('Open the following URL in the browser:\n  %s',_0x00057A["yellow"](`https://earnapp.com/r/${_0x0005DF}`));},_0x00054F["showid_handler"]=()=>{console["log"](_0x000558["get_uuid"]());},_0x00054F["detect_duplicated_process"]=async function(){const _0x0005E0={};_0x0005E0["log_tail"]=!![];const _0x0005E1=_0x0005E0;const _0x0005E2=process["platform"]==='darwin'?'/usr/local/bin/earnapp':'/usr/bin/earnapp';const _0x0005E3='ps aux|grep "'+_0x0005E2+' run"'+' | grep -v grep | wc -l';try{const _0x0005E4=await _0x000558["get_cmd_output"](_0x0005E3);if(_0x0005E4>(0O57060516-0xbc614d))_0x000562["perr"]('dup_run',{["count"]:_0x0005E4},_0x0005E1);}catch(_0x0005E5){_0x000562["perr"]('dup_run_check_fail',{["err"]:_0x000558["e2s"](_0x0005E5)},_0x0005E1);}})
+/**
+ * Modul Operator - Handler untuk Perintah CLI EarnApp
+ * 
+ * Modul ini berisi fungsi-fungsi handler untuk berbagai perintah CLI:
+ * - verify_license: Verifikasi lisensi aplikasi
+ * - ensure_registered: Pastikan device terdaftar di server
+ * - status_handler: Cek status aplikasi (enabled/disabled)
+ * - start_handler: Memulai EarnApp
+ * - stop_handler: Menghentikan EarnApp
+ * - register_handler: Menampilkan URL registrasi
+ * - showid_handler: Menampilkan device UUID
+ * - detect_duplicated_process: Deteksi proses duplikat
+ */
+
+'use strict';
+
+// Import modul-modul yang diperlukan
+const chalk = require('chalk');              // Untuk output berwarna
+const ora = require('ora');                  // Untuk spinner/loading indicator
+const client = require('./peer_node/client.js');  // Client untuk komunikasi peer
+const util = require('./util.js');           // Fungsi utilitas
+const { get_app_conf } = require('./conf.js');    // Konfigurasi aplikasi
+
+// Export modul
+const operator = exports;
+
+// ========================================
+// HELPER FUNCTIONS
+// ========================================
+
+/**
+ * Cek apakah status aplikasi adalah 'enabled'
+ * 
+ * @returns {boolean} - true jika status dimulai dengan 'enabled'
+ */
+const isEnabled = () => {
+    const status = util.get_status();
+    return status.startsWith('enabled');
+};
+
+/**
+ * Tampilkan pesan warning dengan ikon kuning
+ * 
+ * @param {string} message - Pesan utama
+ * @param {...any} args - Argumen tambahan untuk format string
+ */
+const warn = (...args) => {
+    const [message, ...rest] = args;
+    console.log('%s ' + message, chalk.yellow('⚠'), ...rest);
+};
+
+// ========================================
+// HANDLER FUNCTIONS
+// ========================================
+
+/**
+ * Verifikasi lisensi aplikasi
+ * 
+ * Proses:
+ * 1. Cek apakah UUID sudah ada (jika tidak, skip verifikasi)
+ * 2. Ambil konfigurasi verify_license dari peer node
+ * 3. Kirim request verifikasi ke server dengan serial, product, dan license
+ * 4. Jika gagal, tunggu dan retry
+ * 
+ * @returns {boolean} - true jika lisensi valid
+ */
+operator.verify_license = async function() {
+    const verConf = util.ver_conf;
+    
+    // Jika belum ada UUID, anggap valid (skip verifikasi)
+    if (!util.get_uuid()) return true;
+    
+    // Ambil konfigurasi verify_license dari peer (dengan fallback ke local config)
+    const { verify_license: verifyConfig = verConf.verify_license } = await client('verify_license');
+    
+    // Jika tidak ada config verify_license, anggap valid
+    if (!verifyConfig) return true;
+    
+    // Ambil data yang diperlukan untuk verifikasi
+    const license = util.get_license();
+    const productName = verConf.name;
+    const serial = await util.get_serial();
+    
+    try {
+        // Kirim request verifikasi ke server
+        const response = await util.send_api('/verify_license', {
+            method: 'post',
+            data: {
+                serial: serial,
+                product: productName,
+                license: license
+            }
+        });
+        
+        // Cek apakah response valid
+        if (response.data[productName] && response.data[productName] == serial) {
+            return true;
+        }
+    } catch (error) {
+        // Error diabaikan, lanjut ke retry logic
+    }
+    
+    // Lisensi tidak valid, tunggu sebelum retry
+    // Default delay: 12 jam (0xc * 0x3c * 0x3c * 0x3e8 = 12 * 60 * 60 * 1000 ms)
+    const retryDelay = +verifyConfig || (0xc * 0x3c * 0x3c * 0x3e8);
+    
+    warn('invalid license: next check in %s', util.ms_to_dur(retryDelay));
+    
+    // Tunggu dan retry rekursif
+    await util.sleep(retryDelay);
+    return operator.verify_license();
+};
+
+/**
+ * Pastikan device sudah terdaftar di server
+ * 
+ * @param {Object} options - Opsi
+ * @param {boolean} options.force - Paksa registrasi ulang
+ * @returns {boolean} - true jika berhasil terdaftar
+ */
+operator.ensure_registered = async function(options = {}) {
+    try {
+        // Handle migrasi dari format registrasi lama
+        if (options.force && !util.is_registered() && util.is_registered({ obsolete: 1 })) {
+            util.set_registered();
+            return true;
+        }
+        
+        // Jika sudah terdaftar, return true
+        if (util.is_registered()) return true;
+        
+        // Mulai proses registrasi
+        const spinner = ora('Registering Device...').start();
+        
+        // Kirim request registrasi ke server
+        const response = await util.send_api('/install_device', {
+            method: 'post',
+            data: {
+                serial: await util.get_serial()
+            }
+        });
+        
+        // Validasi response
+        if (!response || !response.data) {
+            spinner.fail('Failed registering device');
+            return false;  // Catatan: NaN === NaN = false
+        }
+        
+        // Handle response sukses
+        if (response.data.ok) {
+            util.set_registered();
+            spinner.succeed('Registered');
+        } else if (response.data.preinstall) {
+            // Mode preinstall tidak perlu set_registered
+            spinner.succeed('Registered (preinstall mode)');
+        } else {
+            spinner.fail('Failed registering device (unexpected response)');
+            return false;
+        }
+        
+        return true;
+    } catch (error) {
+        console.error(error);
+    }
+    
+    return false;
+};
+
+/**
+ * Handler untuk perintah 'status'
+ * Menampilkan status EarnApp (enabled/disabled)
+ */
+operator.status_handler = async function() {
+    const spinner = ora('Checking status...').start();
+    
+    // Delay singkat untuk UX (0x320 = 800ms)
+    await util.sleep(0x320);
+    
+    const enabled = isEnabled();
+    const message = 'Current status: ' + (enabled ? 'enabled' : 'disabled');
+    
+    spinner.succeed(message);
+};
+
+/**
+ * Handler untuk perintah 'start'
+ * Memulai EarnApp dan memastikan device terdaftar
+ * 
+ * @param {Object} options - Opsi
+ * @param {boolean} options.force - Paksa start meskipun sudah running
+ */
+operator.start_handler = async function(options = {}) {
+    const spinner = ora('Starting EarnApp...');
+    
+    // Cek apakah sudah berjalan (kecuali force mode)
+    const alreadyEnabled = isEnabled();
+    if (alreadyEnabled && !options.force) {
+        return spinner.fail(
+            'EarnApp was already started before.',
+            'To check status run:',
+            chalk.yellow('earnapp status')
+        );
+    }
+    
+    // Set status ke enabled
+    util.set_status('enabled');
+    
+    // Pastikan device terdaftar
+    const registered = await operator.ensure_registered({ force: options.force });
+    
+    if (!registered) {
+        return console.log('Failed registration: check internet connection and try again');
+    }
+    
+    spinner.succeed('EarnApp is active (making money in the background)');
+};
+
+/**
+ * Handler untuk perintah 'stop'
+ * Menghentikan EarnApp
+ */
+operator.stop_handler = () => {
+    const spinner = ora('Stopping EarnApp...');
+    
+    // Cek apakah sedang berjalan
+    const isRunning = isEnabled();
+    if (!isRunning) {
+        return spinner.fail(
+            'EarnApp is not running, nothing to stop',
+            'To start run:',
+            chalk.green('earnapp start')
+        );
+    }
+    
+    // Set status ke disabled
+    util.set_status('disabled');
+    
+    const message = 'EarnApp stopped. Run: ' + chalk.green('earnapp start') + ' to activate again';
+    spinner.succeed(message);
+};
+
+/**
+ * Handler untuk perintah 'register'
+ * Menampilkan URL untuk registrasi device ke akun pengguna
+ */
+operator.register_handler = () => {
+    const uuid = util.get_uuid();
+    
+    warn('You must register it for earnings to be added to your account.');
+    warn(
+        'Open the following URL in the browser:\n  %s',
+        chalk.yellow(`https://earnapp.com/r/${uuid}`)
+    );
+};
+
+/**
+ * Handler untuk perintah 'showid'
+ * Menampilkan UUID device
+ */
+operator.showid_handler = () => {
+    console.log(util.get_uuid());
+};
+
+/**
+ * Deteksi proses EarnApp duplikat
+ * 
+ * Menggunakan 'ps' untuk mencari proses earnapp yang berjalan.
+ * Jika ditemukan lebih dari 1, log error ke peer node.
+ */
+operator.detect_duplicated_process = async function() {
+    const logOptions = { log_tail: true };
+    
+    // Path executable berbeda untuk macOS dan Linux
+    const execPath = process.platform === 'darwin'
+        ? '/usr/local/bin/earnapp'
+        : '/usr/bin/earnapp';
+    
+    // Command untuk menghitung proses earnapp yang running
+    const countCmd = 'ps aux|grep "' + execPath + ' run"' + ' | grep -v grep | wc -l';
+    
+    try {
+        const count = await util.get_cmd_output(countCmd);
+        
+        // Jika lebih dari 1 proses, log error
+        // Catatan: (0O57060516 - 0xbc614d) = 1
+        if (count > 1) {
+            client.perr('dup_run', { count: count }, logOptions);
+        }
+    } catch (error) {
+        client.perr('dup_run_check_fail', { err: util.e2s(error) }, logOptions);
+    }
+};

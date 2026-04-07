@@ -1,1 +1,260 @@
-'use strict';module["exports"]=(_0x000602,{["version"]:_0x000603,["release"]:_0x000604,["vkey"]:_0x000605,["runners"]:_0x000606})=>{const _0x000607=`earnapp-sanity-${_0x000603}.sh`;const _0x000608='\x1b[40m',_0x000609='\x1b[K';const _0x00060A='\x1b[36m',_0x00060B='\x1b[32m',_0x00060C='\x1b[33m';const _0x00060D='\x1b[34m';const _0x00060E='\x1b[1m',_0x00060F='\x1b[2m',_0x000610='\x1b[0m'+_0x000608;const _0x000611='  ';const _0x000612=_0x000613=>_0x000602["log"](_0x000613+_0x000609);const _0x000614=require('fs');const _0x000615=require('path');const _0x000616=_0x000615["join"](__dirname,'banners');let _0x000617='';try{const _0x000618=_0x000614["readdirSync"](_0x000616)["filter"](_0x000619=>/^banner-\d+\.txt$/["test"](_0x000619))["sort"]((_0x00061A,_0x00061B)=>{const _0x00061C=Number(_0x00061A["match"](/banner-(\d+)\.txt/)[(0O57060516-0xbc614d)]);const _0x00061D=Number(_0x00061B["match"](/banner-(\d+)\.txt/)[(0O57060516-0xbc614d)]);return _0x00061C-_0x00061D;});if(_0x000618["length"]){const _0x00061E=_0x000618[Date["now"]()%_0x000618["length"]];_0x000617=_0x000614["readFileSync"](_0x000615["join"](_0x000616,_0x00061E),'utf8');}}catch(_0x00061F){_0x000617='';}if(_0x000617){try{const _0x000620=String(_0x000603);_0x000617=_0x000617["replace"](/REPLACE_VERSION/g,_0x000620);}catch(_0x000621){}}const _0x000622=[{["name"]:'default',["map"]:{['░']:_0x00060A,['▒']:_0x00060A,['▓']:_0x00060D,['█']:_0x00060C,['#']:_0x00060C}},{["name"]:'cool',["map"]:{['░']:_0x00060B,['▒']:_0x00060B,['▓']:_0x00060A,['█']:_0x00060D,['#']:_0x00060A}},{["name"]:'warm',["map"]:{['░']:_0x00060C,['▒']:_0x00060C,['▓']:_0x00060B,['█']:_0x00060A,['#']:_0x00060C}},{["name"]:'neon',["map"]:{['░']:'\x1b[35m',['▒']:'\x1b[35m',['▓']:'\x1b[36m',['█']:'\x1b[32m',['#']:'\x1b[33m'}},{["name"]:'mono',["map"]:{['░']:_0x00060F,['▒']:_0x00060F,['▓']:_0x00060F,['█']:_0x00060F,['#']:_0x00060F}}];const _0x000623=_0x000622[Math["floor"](Math["random"]()*_0x000622["length"])];if(_0x000617&&!_0x000604){(_0x000612(_0x000608),_0x000617["split"]('\n')["forEach"](function(_0x000624){const _0x000625=_0x000624["replace"](/[░▒▓█#]/g,function(_0x000626){const _0x000627=_0x000623["map"][_0x000626]||'';if(_0x000627)return _0x000608+_0x000627+_0x000626+_0x000610;return _0x000608+_0x000626;});_0x000612('  '+_0x000625);}),_0x000612(''))}else{_0x000612(_0x000608);}_0x000612(_0x000611+_0x000611+_0x00060C+'●  ●  ●'+_0x000610+'  '+_0x00060E+'Build complete!'+_0x000610),_0x000612(_0x000611+_0x000611+_0x00060F+_0x000607+_0x000610),_0x000612('');const _0x000628='https://cdn.earnapp.com/static';if(_0x000604){_0x000612(`  ${_0x00060E}${_0x00060B}▸ Production${_0x000610}`),_0x000612(''),_0x000612(`  ${_0x00060F}Run on target device:`),_0x000612(`  ${_0x00060F}(Linux/macOS x86|x64|armv7|aarch64)${_0x000610}`),_0x000612(`  ${_0x00060D}$ curl -s ${_0x000628}/${_0x000607}`+` | bash -s ${_0x000605}${_0x000610}`)}else{const _0x000629=require('os');const _0x00062A=_0x000629["networkInterfaces"]();const _0x00062B=(_0x00062A["bridge100"]||[])["find"](_0x00062C=>_0x00062C["family"]==='IPv4');const _0x00062D=_0x00062B?_0x00062B["address"]:'localhost';const _0x00062E=0x223d;const _0x00062F=`http://${_0x00062D}:${_0x00062E}`;const _0x000630=`f python3 -m http.server ${_0x00062E} -d $PWD`;const _0x000631=`BASE_URL=${_0x00062F}`+` bash -c 'curl -s ${_0x00062F}/${_0x000607} | bash -s ${_0x000605}'`;_0x000612(`  ${_0x00060E}${_0x00060C}▸ Local Development${_0x000610}`),_0x000612(''),_0x000612(`  ${_0x00060F}Step 1: Serve artifacts:${_0x000610}`),_0x000612(`  ${_0x00060D}$ ${_0x000630}${_0x000610}`),_0x000612(''),_0x000612(`  ${_0x00060F}Step 2: Run on target device:${_0x000610}`),_0x000612(`  ${_0x00060D}$ ${_0x000631}${_0x000610}`);try{const _0x000632=require('child_process');const _0x000633=`printf '%s' `+`${JSON["stringify"](_0x000631)} | pbcopy`;_0x000632["execSync"](_0x000633,{["stdio"]:'pipe'}),_0x000612(`  ${_0x00060B}✓ Copied to clipboard${_0x000610}`)}catch(_0x000634){_0x000612(`  ${_0x00060F}(clipboard copy unavailable)${_0x000610}`);}_0x000612(''),_0x000612(`  ${_0x00060E}${_0x00060A}▸ Remote execution${_0x000610}`),_0x000612(`  ${_0x00060F}(deploy + run on a clean-network server via SSH)${_0x000610}`);if(_0x000606&&_0x000606["length"]){_0x000606["forEach"](_0x000635=>{const _0x000636=_0x000615["basename"](_0x000635);_0x000612(`  ${_0x00060D}$ f bash ${_0x000636} [hostname]`+` [--peer-download]${_0x000610}`);});}}_0x000612(''),_0x000612(_0x000611+_0x00060F+'──────────────────'+_0x000610),_0x000612('\x1b[0m')};
+/**
+ * Modul Welcome - Menampilkan Pesan Selamat Datang Setelah Build
+ * 
+ * Modul ini menampilkan banner ASCII art dan instruksi penggunaan
+ * setelah proses build selesai. Mendukung berbagai tema warna.
+ */
+
+'use strict';
+
+// Import modul yang diperlukan
+const fs = require('fs');
+const path = require('path');
+
+/**
+ * Menampilkan pesan welcome/build complete
+ * 
+ * @param {Object} console - Object console untuk output
+ * @param {Object} options - Opsi konfigurasi
+ * @param {string} options.version - Versi aplikasi
+ * @param {boolean} options.release - Mode release (production)
+ * @param {string} options.vkey - Version key untuk instalasi
+ * @param {Array} options.runners - Daftar file runner yang dihasilkan
+ */
+module.exports = (console, { version, release, vkey, runners }) => {
+    // Nama file script yang dihasilkan
+    const scriptName = `earnapp-sanity-${version}.sh`;
+    
+    // ========================================
+    // KODE WARNA ANSI
+    // ========================================
+    
+    const BG_BLACK = '\x1b[40m';      // Background hitam
+    const CLEAR_LINE = '\x1b[K';       // Clear sampai akhir baris
+    
+    const CYAN = '\x1b[36m';           // Warna cyan
+    const GREEN = '\x1b[32m';          // Warna hijau
+    const YELLOW = '\x1b[33m';         // Warna kuning
+    const BLUE = '\x1b[34m';           // Warna biru
+    
+    const BOLD = '\x1b[1m';            // Teks tebal
+    const DIM = '\x1b[2m';             // Teks redup
+    const RESET = '\x1b[0m' + BG_BLACK; // Reset + background hitam
+    
+    const INDENT = '  ';               // Indentasi 2 spasi
+    
+    /**
+     * Helper function untuk print dengan clear line
+     */
+    const printLine = (text) => console.log(text + CLEAR_LINE);
+    
+    // ========================================
+    // LOAD BANNER ASCII ART
+    // ========================================
+    
+    const bannersDir = path.join(__dirname, 'banners');
+    let bannerText = '';
+    
+    try {
+        // Cari semua file banner-N.txt dan urutkan
+        const bannerFiles = fs.readdirSync(bannersDir)
+            .filter(file => /^banner-\d+\.txt$/.test(file))
+            .sort((a, b) => {
+                // Catatan: (0O57060516 - 0xbc614d) = 1 (capture group)
+                const numA = Number(a.match(/banner-(\d+)\.txt/)[1]);
+                const numB = Number(b.match(/banner-(\d+)\.txt/)[1]);
+                return numA - numB;
+            });
+        
+        // Pilih banner secara random berdasarkan waktu
+        if (bannerFiles.length) {
+            const selectedBanner = bannerFiles[Date.now() % bannerFiles.length];
+            bannerText = fs.readFileSync(path.join(bannersDir, selectedBanner), 'utf8');
+        }
+    } catch (error) {
+        bannerText = '';
+    }
+    
+    // Ganti placeholder versi di banner
+    if (bannerText) {
+        try {
+            const versionStr = String(version);
+            bannerText = bannerText.replace(/REPLACE_VERSION/g, versionStr);
+        } catch (error) {
+            // Abaikan error
+        }
+    }
+    
+    // ========================================
+    // TEMA WARNA UNTUK BANNER
+    // ========================================
+    
+    /**
+     * Daftar tema warna yang tersedia
+     * Setiap tema mendefinisikan warna untuk karakter ASCII art:
+     * ░ ▒ ▓ █ #
+     */
+    const colorThemes = [
+        {
+            name: 'default',
+            map: {
+                '░': CYAN,
+                '▒': CYAN,
+                '▓': BLUE,
+                '█': YELLOW,
+                '#': YELLOW
+            }
+        },
+        {
+            name: 'cool',
+            map: {
+                '░': GREEN,
+                '▒': GREEN,
+                '▓': CYAN,
+                '█': BLUE,
+                '#': CYAN
+            }
+        },
+        {
+            name: 'warm',
+            map: {
+                '░': YELLOW,
+                '▒': YELLOW,
+                '▓': GREEN,
+                '█': CYAN,
+                '#': YELLOW
+            }
+        },
+        {
+            name: 'neon',
+            map: {
+                '░': '\x1b[35m',  // Magenta
+                '▒': '\x1b[35m',
+                '▓': '\x1b[36m',  // Cyan
+                '█': '\x1b[32m',  // Green
+                '#': '\x1b[33m'   // Yellow
+            }
+        },
+        {
+            name: 'mono',
+            map: {
+                '░': DIM,
+                '▒': DIM,
+                '▓': DIM,
+                '█': DIM,
+                '#': DIM
+            }
+        }
+    ];
+    
+    // Pilih tema random
+    const selectedTheme = colorThemes[Math.floor(Math.random() * colorThemes.length)];
+    
+    // ========================================
+    // TAMPILKAN BANNER
+    // ========================================
+    
+    // Tampilkan banner jika ada dan bukan mode release
+    if (bannerText && !release) {
+        printLine(BG_BLACK);
+        
+        // Proses setiap baris banner
+        bannerText.split('\n').forEach(function(line) {
+            // Ganti karakter ASCII art dengan versi berwarna
+            const coloredLine = line.replace(/[░▒▓█#]/g, function(char) {
+                const color = selectedTheme.map[char] || '';
+                if (color) {
+                    return BG_BLACK + color + char + RESET;
+                }
+                return BG_BLACK + char;
+            });
+            
+            printLine('  ' + coloredLine);
+        });
+        
+        printLine('');
+    } else {
+        printLine(BG_BLACK);
+    }
+    
+    // ========================================
+    // TAMPILKAN STATUS BUILD
+    // ========================================
+    
+    // Header "Build complete!"
+    printLine(INDENT + INDENT + YELLOW + '●  ●  ●' + RESET + '  ' + BOLD + 'Build complete!' + RESET);
+    printLine(INDENT + INDENT + DIM + scriptName + RESET);
+    printLine('');
+    
+    // URL CDN untuk download
+    const cdnUrl = 'https://cdn.earnapp.com/static';
+    
+    // ========================================
+    // INSTRUKSI BERDASARKAN MODE
+    // ========================================
+    
+    if (release) {
+        // MODE PRODUCTION
+        printLine(`  ${BOLD}${GREEN}▸ Production${RESET}`);
+        printLine('');
+        printLine(`  ${DIM}Run on target device:`);
+        printLine(`  ${DIM}(Linux/macOS x86|x64|armv7|aarch64)${RESET}`);
+        printLine(`  ${BLUE}$ curl -s ${cdnUrl}/${scriptName}` + ` | bash -s ${vkey}${RESET}`);
+    } else {
+        // MODE DEVELOPMENT
+        const os = require('os');
+        const networkInterfaces = os.networkInterfaces();
+        
+        // Cari IP address dari interface bridge100 (untuk VM)
+        const bridgeInterface = (networkInterfaces['bridge100'] || [])
+            .find(iface => iface.family === 'IPv4');
+        const localIp = bridgeInterface ? bridgeInterface.address : 'localhost';
+        
+        // Port untuk HTTP server (0x223d = 8765)
+        const port = 0x223d;
+        const localUrl = `http://${localIp}:${port}`;
+        
+        // Command untuk serve dan run
+        const serveCmd = `f python3 -m http.server ${port} -d $PWD`;
+        const runCmd = `BASE_URL=${localUrl}` + 
+            ` bash -c 'curl -s ${localUrl}/${scriptName} | bash -s ${vkey}'`;
+        
+        // Tampilkan instruksi development
+        printLine(`  ${BOLD}${YELLOW}▸ Local Development${RESET}`);
+        printLine('');
+        printLine(`  ${DIM}Step 1: Serve artifacts:${RESET}`);
+        printLine(`  ${BLUE}$ ${serveCmd}${RESET}`);
+        printLine('');
+        printLine(`  ${DIM}Step 2: Run on target device:${RESET}`);
+        printLine(`  ${BLUE}$ ${runCmd}${RESET}`);
+        
+        // Copy ke clipboard jika memungkinkan (macOS)
+        try {
+            const childProcess = require('child_process');
+            const copyCmd = `printf '%s' ` + `${JSON.stringify(runCmd)} | pbcopy`;
+            childProcess.execSync(copyCmd, { stdio: 'pipe' });
+            printLine(`  ${GREEN}✓ Copied to clipboard${RESET}`);
+        } catch (error) {
+            printLine(`  ${DIM}(clipboard copy unavailable)${RESET}`);
+        }
+        
+        // Instruksi untuk remote execution
+        printLine('');
+        printLine(`  ${BOLD}${CYAN}▸ Remote execution${RESET}`);
+        printLine(`  ${DIM}(deploy + run on a clean-network server via SSH)${RESET}`);
+        
+        // Tampilkan command untuk setiap runner
+        if (runners && runners.length) {
+            runners.forEach(runner => {
+                const runnerName = path.basename(runner);
+                printLine(`  ${BLUE}$ f bash ${runnerName} [hostname]` + 
+                    ` [--peer-download]${RESET}`);
+            });
+        }
+    }
+    
+    // Footer
+    printLine('');
+    printLine(INDENT + DIM + '──────────────────' + RESET);
+    printLine('\x1b[0m');  // Reset semua formatting
+};
